@@ -20,7 +20,7 @@ import { useSupabaseUser } from "@/hooks/use-supabase-user";
 type OptionItem = {
   id: string;
   label: string;
-  weight: number | null;
+  weight?: number | null;
 };
 
 type RouletteData = {

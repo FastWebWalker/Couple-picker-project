@@ -16,10 +16,19 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
 
   const { data: option, error: optionError } = await supabaseAdmin
     .from("options")
-    .select("id,label,roulette:roulettes(id,is_prebuilt,owner_id)")
+    .select("id,label,roulette_id")
     .eq("id", params.id)
     .maybeSingle();
-  if (optionError || !option || option.roulette?.is_prebuilt) {
+  if (optionError || !option) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
+  const { data: roulette, error: rouletteError } = await supabaseAdmin
+    .from("roulettes")
+    .select("id,is_prebuilt,owner_id")
+    .eq("id", option.roulette_id)
+    .maybeSingle();
+  if (rouletteError || !roulette || roulette.is_prebuilt) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
@@ -28,7 +37,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
     .select("id")
     .eq("supabase_id", user.id)
     .maybeSingle();
-  if (!dbUser || option.roulette?.owner_id !== dbUser.id) {
+  if (!dbUser || roulette.owner_id !== dbUser.id) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
@@ -59,10 +68,19 @@ export async function DELETE(_: Request, { params }: { params: { id: string } })
 
   const { data: option, error: optionError } = await supabaseAdmin
     .from("options")
-    .select("id,label,roulette:roulettes(id,is_prebuilt,owner_id)")
+    .select("id,label,roulette_id")
     .eq("id", params.id)
     .maybeSingle();
-  if (optionError || !option || option.roulette?.is_prebuilt) {
+  if (optionError || !option) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
+  const { data: roulette, error: rouletteError } = await supabaseAdmin
+    .from("roulettes")
+    .select("id,is_prebuilt,owner_id")
+    .eq("id", option.roulette_id)
+    .maybeSingle();
+  if (rouletteError || !roulette || roulette.is_prebuilt) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
@@ -71,7 +89,7 @@ export async function DELETE(_: Request, { params }: { params: { id: string } })
     .select("id")
     .eq("supabase_id", user.id)
     .maybeSingle();
-  if (!dbUser || option.roulette?.owner_id !== dbUser.id) {
+  if (!dbUser || roulette.owner_id !== dbUser.id) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 

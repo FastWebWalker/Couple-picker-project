@@ -3,13 +3,18 @@ import { notFound } from "next/navigation";
 import { RouletteClient } from "@/components/roulette-client";
 import { ensureDbUser, getSupabaseUser } from "@/lib/auth";
 import { supabaseAdmin } from "@/lib/supabase/admin";
+import type { Database } from "@/lib/supabase/types";
 
 export default async function RoulettePage({ params }: { params: { id: string } }) {
+  type RouletteWithOptions = Database["public"]["Tables"]["roulettes"]["Row"] & {
+    options: Database["public"]["Tables"]["options"]["Row"][];
+  };
+
   const { data: roulette, error } = await supabaseAdmin
     .from("roulettes")
     .select("id,title,description,icon,is_prebuilt,owner_id, options(id,label,weight,created_at)")
     .eq("id", params.id)
-    .maybeSingle();
+    .maybeSingle<RouletteWithOptions>();
 
   if (error || !roulette) {
     notFound();

@@ -1,4 +1,5 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "@/lib/supabase/types";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
@@ -8,12 +9,12 @@ if (!supabaseUrl || !serviceRoleKey) {
 }
 
 const globalForSupabase = globalThis as unknown as {
-  supabaseAdmin: ReturnType<typeof createClient> | undefined;
+  supabaseAdmin: SupabaseClient<Database> | undefined;
 };
 
 export const supabaseAdmin =
   globalForSupabase.supabaseAdmin ??
-  createClient(supabaseUrl, serviceRoleKey, {
+  createClient<Database>(supabaseUrl, serviceRoleKey, {
     auth: {
       autoRefreshToken: false,
       persistSession: false,

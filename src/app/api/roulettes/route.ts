@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { rouletteCreateSchema } from "@/lib/validators";
 import { ensureDbUser, getSupabaseUser } from "@/lib/auth";
 import { supabaseAdmin } from "@/lib/supabase/admin";
+import type { Database } from "@/lib/supabase/types";
 
 export async function POST(req: Request) {
   const user = await getSupabaseUser();
@@ -30,7 +31,7 @@ export async function POST(req: Request) {
       is_prebuilt: false,
     })
     .select("*")
-    .single();
+    .single<Database["public"]["Tables"]["roulettes"]["Row"]>();
 
   if (error || !roulette) {
     return NextResponse.json({ error: "Database error" }, { status: 500 });

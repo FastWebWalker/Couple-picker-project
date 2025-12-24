@@ -3,17 +3,23 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { ensureDbUser, getSupabaseUser } from "@/lib/auth";
 import { supabaseAdmin } from "@/lib/supabase/admin";
+import type { Database } from "@/lib/supabase/types";
 
 export default async function RoulettesPage() {
   const user = await getSupabaseUser();
   const dbUser = user ? await ensureDbUser() : null;
+
+  type RouletteListItem = Database["public"]["Tables"]["roulettes"]["Row"] & {
+    options: Pick<Database["public"]["Tables"]["options"]["Row"], "id">[];
+  };
 
   const [prebuiltResult, customResult] = await Promise.all([
     supabaseAdmin
       .from("roulettes")
       .select("id,title,description,icon,is_prebuilt, options(id)")
       .eq("is_prebuilt", true)
-      .order("created_at", { ascending: true }),
+      .order("created_at", { ascending: true })
+      .returns<RouletteListItem[]>(),
     dbUser
       ? supabaseAdmin
           .from("roulettes")
@@ -21,6 +27,7 @@ export default async function RoulettesPage() {
           .eq("owner_id", dbUser.id)
           .eq("is_prebuilt", false)
           .order("created_at", { ascending: false })
+          .returns<RouletteListItem[]>()
       : Promise.resolve({ data: [] }),
   ]);
 
