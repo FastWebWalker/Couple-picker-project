@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 
@@ -69,10 +69,10 @@ export function AdminPanel({ prebuilt }: { prebuilt: Prebuilt[] }) {
   };
 
   return (
-    <div className="space-y-8">
-      <section className="rounded-3xl border bg-card p-6 shadow-sm">
+    <div className="grid gap-8">
+      <section className="grid gap-4 rounded-3xl border bg-card p-6 shadow-sm">
         <h2 className="text-xl font-semibold">Додати опцію до готової рулетки</h2>
-        <div className="mt-4 grid gap-3 md:grid-cols-[1fr_2fr_auto]">
+        <div className="grid gap-3 md:grid-cols-[1fr_2fr_auto]">
           <select
             className="h-11 rounded-xl border border-input bg-background px-3 text-sm"
             value={selected}
@@ -89,28 +89,31 @@ export function AdminPanel({ prebuilt }: { prebuilt: Prebuilt[] }) {
         </div>
       </section>
 
-      <section className="rounded-3xl border bg-card p-6 shadow-sm">
-        <div className="flex items-center justify-between">
+      <section className="grid gap-4 rounded-3xl border bg-card p-6 shadow-sm">
+        <div className="grid gap-3 md:grid-cols-[1fr_auto] md:items-center">
           <h2 className="text-xl font-semibold">Пропозиції від користувачів</h2>
           <Button variant="ghost" onClick={loadProposals}>
             Оновити
           </Button>
         </div>
-        <div className="mt-4 space-y-3">
+        <div className="grid gap-3">
           {proposals.length === 0 ? (
             <div className="rounded-2xl border border-dashed p-6 text-sm text-muted-foreground">
               Немає нових пропозицій.
             </div>
           ) : (
             proposals.map((proposal) => (
-              <div key={proposal.id} className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border p-3">
-                <div>
+              <div
+                key={proposal.id}
+                className="grid gap-3 rounded-2xl border p-3 md:grid-cols-[1fr_auto] md:items-center"
+              >
+                <div className="grid gap-1">
                   <p className="text-sm font-semibold">{proposal.label}</p>
                   <p className="text-xs text-muted-foreground">
                     {proposal.roulette.icon} {proposal.roulette.title}
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="grid grid-flow-col auto-cols-max items-center gap-2">
                   <Button size="sm" onClick={() => updateProposal(proposal.id, "approve")}>
                     Підтвердити
                   </Button>

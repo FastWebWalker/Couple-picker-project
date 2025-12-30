@@ -34,7 +34,7 @@ export default async function RoulettePage({ params }: { params: { id: string } 
   const isAdmin = dbUser?.role === "admin";
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 py-10">
+    <div className="mx-auto grid w-full max-w-6xl gap-8 px-4 py-10">
       <RouletteClient
         roulette={{ ...roulette, options: sortedOptions }}
         isOwner={isOwner}

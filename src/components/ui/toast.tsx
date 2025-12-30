@@ -13,7 +13,7 @@ const ToastViewport = React.forwardRef<
   <ToastPrimitives.Viewport
     ref={ref}
     className={cn(
-      "fixed top-4 right-4 z-[100] flex w-[360px] max-w-[90vw] flex-col gap-2 outline-none",
+      "fixed top-4 right-4 z-[100] grid w-[360px] max-w-[90vw] gap-2 outline-none",
       className
     )}
     {...props}
@@ -28,7 +28,7 @@ const Toast = React.forwardRef<
   <ToastPrimitives.Root
     ref={ref}
     className={cn(
-      "group pointer-events-auto relative flex w-full items-start gap-3 overflow-hidden rounded-2xl border bg-card p-4 shadow-lg",
+      "group pointer-events-auto relative grid w-full grid-cols-[1fr_auto] items-start gap-3 overflow-hidden rounded-2xl border bg-card p-4 shadow-lg",
       className
     )}
     {...props}

@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 
@@ -21,13 +21,13 @@ export function GridCard({ title, description, icon, href, tone = "neutral" }: G
     <Link
       href={href}
       className={cn(
-        "group relative flex aspect-square flex-col justify-between overflow-hidden rounded-3xl border border-white/30 bg-white/70 p-6 shadow-soft transition hover:-translate-y-1 hover:shadow-xl dark:bg-white/5",
+        "group relative grid aspect-square grid-rows-[auto_1fr_auto] gap-4 overflow-hidden rounded-3xl border border-white/30 bg-white/70 p-6 shadow-soft transition hover:-translate-y-1 hover:shadow-xl dark:bg-white/5",
         "before:absolute before:inset-0 before:-z-10 before:opacity-0 before:transition group-hover:before:opacity-100",
         `before:bg-gradient-to-br ${toneClasses[tone]}`
       )}
     >
       <div className="text-3xl">{icon}</div>
-      <div className="space-y-2">
+      <div className="grid gap-2">
         <h3 className="text-lg font-semibold">{title}</h3>
         <p className="text-sm text-muted-foreground">{description}</p>
       </div>

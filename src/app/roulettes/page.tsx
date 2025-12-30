@@ -1,29 +1,31 @@
-import Link from "next/link";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+﻿import Link from "next/link";
+
 import { ensureDbUser, getSupabaseUser } from "@/lib/auth";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import type { Database } from "@/lib/supabase/types";
+
+type RouletteItem = {
+  title: string;
+  href: string;
+};
 
 export default async function RoulettesPage() {
   const user = await getSupabaseUser();
   const dbUser = user ? await ensureDbUser() : null;
 
-  type RouletteListItem = Database["public"]["Tables"]["roulettes"]["Row"] & {
-    options: Pick<Database["public"]["Tables"]["options"]["Row"], "id">[];
-  };
+  type RouletteListItem = Database["public"]["Tables"]["roulettes"]["Row"];
 
   const [prebuiltResult, customResult] = await Promise.all([
     supabaseAdmin
       .from("roulettes")
-      .select("id,title,description,icon,is_prebuilt, options(id)")
+      .select("id,title,is_prebuilt")
       .eq("is_prebuilt", true)
       .order("created_at", { ascending: true })
       .returns<RouletteListItem[]>(),
     dbUser
       ? supabaseAdmin
           .from("roulettes")
-          .select("id,title,description,icon,is_prebuilt, options(id)")
+          .select("id,title,is_prebuilt")
           .eq("owner_id", dbUser.id)
           .eq("is_prebuilt", false)
           .order("created_at", { ascending: false })
@@ -34,71 +36,34 @@ export default async function RoulettesPage() {
   const prebuilt = prebuiltResult.data ?? [];
   const custom = customResult.data ?? [];
 
+  const items: RouletteItem[] = [...prebuilt, ...custom].map((roulette) => ({
+    title: roulette.title,
+    href: `/roulette/${roulette.id}`,
+  }));
+
+  while (items.length < 6) {
+    items.push({
+      title: "Порожньо",
+      href: `/soon-${items.length + 1}`,
+    });
+  }
+
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 py-12">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-semibold">Каталог рулеток</h1>
-          <p className="text-muted-foreground">
-            Готові модулі та ваші власні експерименти.
-          </p>
-        </div>
-        <Button asChild>
-          <Link href="/create">Створити рулетку</Link>
-        </Button>
+    <div className="grid h-[calc(100vh-64px)] w-full overflow-hidden">
+      <div className="grid h-full grid-rows-2 gap-0 md:grid-cols-3 md:grid-rows-2">
+        {items.slice(0, 6).map((item, index) => (
+          <Link
+            key={`${item.href}-${item.title}`}
+            href={item.href}
+            className="card-animate card-folder group grid h-full content-center border border-orange-400 bg-white/70 p-6 text-gray-900 shadow-sm transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-orange-50/80 hover:shadow-2xl"
+            style={{ animationDelay: `${index * 80}ms` }}
+          >
+            <h2 className="text-lg font-semibold uppercase tracking-[0.25em]">
+              {item.title}
+            </h2>
+          </Link>
+        ))}
       </div>
-
-      <section className="mt-10 space-y-4">
-        <h2 className="text-xl font-semibold">Готові рулетки</h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {prebuilt.map((roulette) => (
-            <Card key={roulette.id} className="glass">
-              <CardHeader>
-                <CardTitle className="text-lg">
-                  {roulette.icon} {roulette.title}
-                </CardTitle>
-                <CardDescription>{roulette.description}</CardDescription>
-              </CardHeader>
-              <CardContent className="flex items-center justify-between text-sm text-muted-foreground">
-                <span>{roulette.options?.length ?? 0} опцій</span>
-                <Button asChild size="sm">
-                  <Link href={`/roulette/${roulette.id}`}>Відкрити</Link>
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      <section className="mt-12 space-y-4">
-        <h2 className="text-xl font-semibold">Мої кастомні</h2>
-        {custom.length === 0 ? (
-          <div className="rounded-3xl border border-dashed p-6 text-sm text-muted-foreground">
-            {user
-              ? "Поки що немає власних рулеток. Створіть першу."
-              : "Увійдіть, щоб створювати власні рулетки."}
-          </div>
-        ) : (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {custom.map((roulette) => (
-              <Card key={roulette.id} className="glass">
-                <CardHeader>
-                  <CardTitle className="text-lg">
-                    {roulette.icon} {roulette.title}
-                  </CardTitle>
-                  <CardDescription>{roulette.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="flex items-center justify-between text-sm text-muted-foreground">
-                  <span>{roulette.options?.length ?? 0} опцій</span>
-                  <Button asChild size="sm">
-                    <Link href={`/roulette/${roulette.id}`}>Відкрити</Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
-      </section>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useMemo, useState } from "react";
 
@@ -163,7 +163,7 @@ export function RouletteClient({ roulette, isOwner, isAdmin }: RouletteClientPro
   const historyList = useMemo(
     () =>
       history.map((item) => (
-        <li key={item.at} className="flex items-center justify-between rounded-xl border p-3 text-sm">
+        <li key={item.at} className="grid grid-cols-[1fr_auto] items-center gap-3 rounded-xl border p-3 text-sm">
           <span>{item.label}</span>
           <span className="text-xs text-muted-foreground">
             {new Date(item.at).toLocaleTimeString("uk-UA", { hour: "2-digit", minute: "2-digit" })}
@@ -178,10 +178,10 @@ export function RouletteClient({ roulette, isOwner, isAdmin }: RouletteClientPro
       <div className="glass rounded-3xl p-6">
         <RouletteWheel options={options} onResult={handleResult} canSpin={isSignedIn} />
       </div>
-      <div className="space-y-6">
-        <div className="rounded-3xl border bg-card p-6 shadow-sm">
-          <div className="flex items-center justify-between">
-            <div>
+      <div className="grid gap-6">
+        <div className="grid gap-4 rounded-3xl border bg-card p-6 shadow-sm">
+          <div className="grid gap-4 md:grid-cols-[1fr_auto] md:items-start">
+            <div className="grid gap-1">
               <h2 className="text-2xl font-semibold">
                 {roulette.icon} {roulette.title}
               </h2>
@@ -192,13 +192,13 @@ export function RouletteClient({ roulette, isOwner, isAdmin }: RouletteClientPro
             </div>
           </div>
           {canEdit && (
-            <div className="mt-4 flex flex-wrap gap-3">
+            <div className="grid grid-flow-col auto-cols-max gap-3">
               <Button variant="destructive" size="sm" onClick={() => setDeleteOpen(true)}>
                 Видалити рулетку
               </Button>
             </div>
           )}
-          <div className="mt-4 flex flex-wrap gap-3 text-sm text-muted-foreground">
+          <div className="grid grid-flow-col auto-cols-max gap-3 text-sm text-muted-foreground">
             <span>{options.length} опцій</span>
             {roulette.is_prebuilt && <span>Доступно як демо</span>}
           </div>
@@ -210,7 +210,7 @@ export function RouletteClient({ roulette, isOwner, isAdmin }: RouletteClientPro
             <TabsTrigger value="history">Історія</TabsTrigger>
           </TabsList>
           <TabsContent value="options">
-            <div className="space-y-3">
+            <div className="grid gap-3">
               {options.length === 0 ? (
                 <div className="rounded-2xl border border-dashed p-6 text-sm text-muted-foreground">
                   Поки що немає опцій. Додайте перші, щоб колесо запрацювало.
@@ -219,19 +219,19 @@ export function RouletteClient({ roulette, isOwner, isAdmin }: RouletteClientPro
                 options.map((option) => (
                   <div
                     key={option.id}
-                    className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border p-3 text-sm"
+                    className="grid gap-3 rounded-2xl border p-3 text-sm md:grid-cols-[1fr_auto] md:items-center"
                   >
                     {editingId === option.id ? (
                       <Input
                         value={editingValue}
                         onChange={(event) => setEditingValue(event.target.value)}
-                        className="max-w-xs"
+                        className="w-full md:max-w-xs"
                       />
                     ) : (
                       <span>{option.label}</span>
                     )}
                     {canEdit && (
-                      <div className="flex items-center gap-2">
+                      <div className="grid grid-flow-col auto-cols-max items-center gap-2">
                         {editingId === option.id ? (
                           <>
                             <Button size="sm" onClick={saveEdit}>
@@ -259,13 +259,13 @@ export function RouletteClient({ roulette, isOwner, isAdmin }: RouletteClientPro
             </div>
           </TabsContent>
           <TabsContent value="history">
-            <div className="space-y-3">
+            <div className="grid gap-3">
               {history.length === 0 ? (
                 <div className="rounded-2xl border border-dashed p-6 text-sm text-muted-foreground">
                   Історія порожня. Зробіть перший спін.
                 </div>
               ) : (
-                <ul className="space-y-2">{historyList}</ul>
+                <ul className="grid gap-2">{historyList}</ul>
               )}
             </div>
           </TabsContent>
@@ -288,7 +288,7 @@ export function RouletteClient({ roulette, isOwner, isAdmin }: RouletteClientPro
                   : "Нова опція з'явиться одразу на колесі."}
               </DialogDescription>
             </DialogHeader>
-            <div className="space-y-4">
+            <div className="grid gap-4">
               <Input
                 value={draft}
                 onChange={(event) => setDraft(event.target.value)}
@@ -308,7 +308,7 @@ export function RouletteClient({ roulette, isOwner, isAdmin }: RouletteClientPro
                 Це назавжди видалить рулетку та всі її опції.
               </DialogDescription>
             </DialogHeader>
-            <div className="flex justify-end gap-2">
+            <div className="grid grid-flow-col auto-cols-max justify-end gap-2">
               <Button variant="ghost" onClick={() => setDeleteOpen(false)}>
                 Скасувати
               </Button>

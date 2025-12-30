@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+﻿import { redirect } from "next/navigation";
 
 import { AdminPanel } from "@/components/admin-panel";
 import { ensureDbUser } from "@/lib/auth";
@@ -17,16 +17,14 @@ export default async function AdminPage() {
     .order("created_at", { ascending: true });
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-12">
-      <div className="space-y-4">
+    <div className="mx-auto grid w-full max-w-5xl gap-6 px-4 py-12">
+      <div className="grid gap-4">
         <h1 className="text-3xl font-semibold">Адмін панель</h1>
         <p className="text-muted-foreground">
           Керуйте готовими рулетками та підтверджуйте пропозиції.
         </p>
       </div>
-      <div className="mt-6">
-        <AdminPanel prebuilt={prebuilt ?? []} />
-      </div>
+      <AdminPanel prebuilt={prebuilt ?? []} />
     </div>
   );
 }

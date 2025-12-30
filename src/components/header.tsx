@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -30,20 +30,20 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/20 bg-background/70 backdrop-blur-xl">
-      <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4">
-        <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
+      <div className="mx-auto grid w-full max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-4 px-4 py-4">
+        <Link href="/" className="grid grid-flow-col auto-cols-max items-center gap-2 text-lg font-semibold">
           <span className="text-2xl">🎡</span>
-          <span>Date Roulette</span>
+          <span>Рулетка для двох</span>
         </Link>
-        <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
+        <nav className="hidden text-sm font-medium md:grid md:grid-flow-col md:auto-cols-max md:items-center md:gap-6">
           <Link href="/roulettes">Рулетки</Link>
           <Link href="/create">Створити</Link>
           {role === "admin" && <Link href="/admin">Адмін</Link>}
         </nav>
-        <div className="flex items-center gap-3">
+        <div className="grid grid-flow-col auto-cols-max items-center gap-3">
           <ThemeToggle />
           {isSignedIn ? (
-            <div className="flex items-center gap-2">
+            <div className="grid grid-flow-col auto-cols-max items-center gap-2">
               <span className="hidden text-sm text-muted-foreground md:inline">
                 {user?.email ?? "Користувач"}
               </span>

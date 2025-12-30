@@ -1,4 +1,4 @@
-export type Database = {
+﻿export type Database = {
   public: {
     Tables: {
       users: {
@@ -96,6 +96,33 @@ export type Database = {
           roulette_id?: string;
           label?: string;
           status?: "pending" | "approved" | "rejected";
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      notes: {
+        Row: {
+          id: string;
+          user_id: string;
+          title: string;
+          body: string;
+          scheduled_for: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          title: string;
+          body: string;
+          scheduled_for?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          title?: string;
+          body?: string;
+          scheduled_for?: string | null;
           created_at?: string;
         };
         Relationships: [];

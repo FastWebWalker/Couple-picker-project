@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useMemo, useState } from "react";
 import confetti from "canvas-confetti";
@@ -74,8 +74,8 @@ export function RouletteWheel({ options, onResult, canSpin = true }: RouletteWhe
   const current = options[prizeIndex];
 
   return (
-    <div className="flex flex-col items-center gap-6">
-      <div className="relative flex flex-col items-center gap-3">
+    <div className="grid gap-6 place-items-center">
+      <div className="relative grid gap-3 place-items-center">
         <div className="rounded-[40px] bg-white/70 p-4 shadow-soft dark:bg-white/5">
           <Wheel
             mustStartSpinning={mustSpin}
@@ -96,7 +96,7 @@ export function RouletteWheel({ options, onResult, canSpin = true }: RouletteWhe
           />
         </div>
         <div className="text-sm text-muted-foreground">
-          {current ? `Останній випад: ${current.label}` : "Натисни “Крутити”"}
+          {current ? `Останній випад: ${current.label}` : "Натисни «Крутити»"}
         </div>
       </div>
       <Button onClick={spin} disabled={mustSpin || options.length < 2 || !canSpin} size="lg">

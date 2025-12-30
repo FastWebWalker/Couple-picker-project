@@ -1,10 +1,9 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { Manrope, Playfair_Display } from "next/font/google";
 
 import "./globals.css";
 import Providers from "@/components/providers";
 import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { ToastRootProvider } from "@/components/ui/toaster";
 
 const manrope = Manrope({
@@ -18,8 +17,8 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Date Roulette",
-  description: "Випадкові побачення та ідеї для пар і друзів.",
+  title: "Рулетка для двох",
+  description: "Рулетка для двох — сервіс випадкових рішень для пар.",
 };
 
 export default function RootLayout({
@@ -32,10 +31,9 @@ export default function RootLayout({
       <body className={`${manrope.variable} ${playfair.variable} font-sans`}>
         <Providers>
           <ToastRootProvider>
-            <div className="min-h-screen bg-grid-glow">
+            <div className="grid min-h-screen grid-rows-[auto_1fr_auto] bg-grid-glow">
               <Header />
-              <main>{children}</main>
-              <Footer />
+              <main className="grid">{children}</main>
             </div>
           </ToastRootProvider>
         </Providers>

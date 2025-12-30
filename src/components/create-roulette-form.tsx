@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -65,18 +65,18 @@ export function CreateRouletteForm() {
   };
 
   return (
-    <form className="space-y-6" onSubmit={handleSubmit}>
+    <form className="grid gap-6" onSubmit={handleSubmit}>
       <div className="grid gap-4 md:grid-cols-3">
-        <div className="md:col-span-2">
+        <div className="grid gap-2 md:col-span-2">
           <label className="text-sm font-semibold">Назва</label>
           <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Напр. Вечір удвох" />
         </div>
-        <div>
+        <div className="grid gap-2">
           <label className="text-sm font-semibold">Іконка/emoji</label>
           <Input value={icon} onChange={(e) => setIcon(e.target.value)} placeholder="🎯" />
         </div>
       </div>
-      <div>
+      <div className="grid gap-2">
         <label className="text-sm font-semibold">Опис</label>
         <Input
           value={description}
@@ -84,16 +84,16 @@ export function CreateRouletteForm() {
           placeholder="Коротко про рулетку"
         />
       </div>
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
+      <div className="grid gap-3">
+        <div className="grid grid-cols-[1fr_auto] items-center gap-3">
           <label className="text-sm font-semibold">Опції</label>
           <Button type="button" variant="ghost" onClick={addOption}>
             + Додати поле
           </Button>
         </div>
-        <div className="space-y-3">
+        <div className="grid gap-3">
           {options.map((option, index) => (
-            <div key={index} className="flex items-center gap-2">
+            <div key={index} className="grid grid-cols-[1fr_auto] items-center gap-2">
               <Input
                 value={option}
                 onChange={(e) => updateOption(index, e.target.value)}

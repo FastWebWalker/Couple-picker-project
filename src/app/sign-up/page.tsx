@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useState } from "react";
@@ -42,11 +42,11 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(164,210,255,0.35),_transparent_55%)] px-4 py-16">
-      <div className="mx-auto grid max-w-5xl items-center gap-10 md:grid-cols-2">
-        <div className="space-y-6">
+    <div className="min-h-screen grid place-items-center bg-[radial-gradient(circle_at_top,_rgba(164,210,255,0.35),_transparent_55%)] px-4 py-16">
+      <div className="mx-auto grid w-full max-w-5xl gap-10 md:grid-cols-12 md:items-center">
+        <div className="grid gap-6 md:col-span-6">
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-            Date Roulette
+            Рулетка для двох
           </p>
           <h1 className="text-4xl font-semibold leading-tight">
             Створи власні рулетки та грай разом
@@ -56,34 +56,32 @@ export default function SignUpPage() {
             свої найкращі комбінації.
           </p>
         </div>
-        <div className="glass rounded-3xl p-8">
-          <div className="space-y-4">
-            <form className="space-y-3" onSubmit={signUpWithEmail}>
-              <Input
-                type="email"
-                placeholder="email@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              <Input
-                type="password"
-                placeholder="Пароль (мін. 6 символів)"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? "Реєструємо..." : "Зареєструватися"}
-              </Button>
-            </form>
-            <p className="text-sm text-muted-foreground">
-              Вже є акаунт?{" "}
-              <Link href="/sign-in" className="font-semibold text-primary">
-                Увійти
-              </Link>
-            </p>
-          </div>
+        <div className="glass grid gap-4 rounded-3xl p-8 md:col-span-6">
+          <form className="grid gap-3" onSubmit={signUpWithEmail}>
+            <Input
+              type="email"
+              placeholder="email@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <Input
+              type="password"
+              placeholder="Пароль (мін. 6 символів)"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Реєструємо..." : "Зареєструватися"}
+            </Button>
+          </form>
+          <p className="text-sm text-muted-foreground">
+            Вже є акаунт?{" "}
+            <Link href="/sign-in" className="font-semibold text-primary">
+              Увійти
+            </Link>
+          </p>
         </div>
       </div>
     </div>
